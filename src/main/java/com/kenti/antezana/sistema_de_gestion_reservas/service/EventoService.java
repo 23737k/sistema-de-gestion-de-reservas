@@ -5,6 +5,7 @@ import com.kenti.antezana.sistema_de_gestion_reservas.dto.request.EventoReq;
 import com.kenti.antezana.sistema_de_gestion_reservas.dto.response.EventoRes;
 import com.kenti.antezana.sistema_de_gestion_reservas.model.Evento;
 import com.kenti.antezana.sistema_de_gestion_reservas.repository.EventoRepo;
+import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,7 +26,6 @@ public class EventoService {
   }
 
   public EventoRes obtenerEventoPorId(Long id) {
-    //manejar excepciones
-    return eventoRepo.findById(id).map(eventoMapper::toRes).orElse(null);
+    return eventoRepo.findById(id).map(eventoMapper::toRes).orElseThrow(()-> new EntityNotFoundException("Evento no encontrado"));
   }
 }
