@@ -20,6 +20,6 @@ public class Funcion {
     @ManyToOne
     private Evento evento;
     @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
-    @JoinColumn(name = "funcionId")
+    @JoinColumn(name = "funcion_id")
     private List<Disponibilidad> disponibilidades;
 }
