@@ -13,19 +13,42 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class EventoService {
-  private final EventoRepo eventoRepo;
-  private final EventoMapper eventoMapper;
+    private final EventoRepo eventoRepo;
+    private final EventoMapper eventoMapper;
 
-  public EventoRes crearEvento(EventoReq eventoReq) {
-    Evento evento = eventoMapper.toEntity(eventoReq);
-    return eventoMapper.toRes(eventoRepo.save(evento));
-  }
+    public EventoRes crearEvento(EventoReq eventoReq) {
+        Evento evento = eventoMapper.toEntity(eventoReq);
+        return eventoMapper.toRes(eventoRepo.save(evento));
+    }
 
-  public List<EventoRes> obtenerEventos() {
-    return eventoRepo.findAll().stream().map(eventoMapper::toRes).toList();
-  }
+    public List<EventoRes> obtenerEventos() {
+        return eventoRepo.findAll().stream().map(eventoMapper::toRes).toList();
+    }
 
-  public EventoRes obtenerEventoPorId(Long id) {
-    return eventoRepo.findById(id).map(eventoMapper::toRes).orElseThrow(()-> new EntityNotFoundException("Evento no encontrado"));
-  }
+    public EventoRes obtenerEventoPorId(Long id) {
+        return eventoRepo.findById(id).map(eventoMapper::toRes)
+            .orElseThrow(() -> new EntityNotFoundException("Evento no encontrado"));
+    }
+
+    public EventoRes modificarEvento(Long id, EventoReq eventoReq) {
+        if (existeEvento(id)) {
+            Evento evento = eventoMapper.toEntity(eventoReq);
+            evento.setId(id);
+            return eventoMapper.toRes(eventoRepo.save(evento));
+        } else {
+            throw new EntityNotFoundException("Evento no encontrado");
+        }
+    }
+
+    public void eliminarEvento(Long id) {
+        if (existeEvento(id)) {
+            eventoRepo.deleteById(id);
+        } else {
+            throw new EntityNotFoundException("Evento no encontrado");
+        }
+    }
+
+    public boolean existeEvento(Long eventoId) {
+        return eventoRepo.existsById(eventoId);
+    }
 }

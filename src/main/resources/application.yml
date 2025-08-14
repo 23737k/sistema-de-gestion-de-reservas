@@ -13,3 +13,7 @@ spring:
 
   flyway:
     enabled: false
+
+backend:
+  api:
+    base-path: /api/v1

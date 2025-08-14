@@ -1,23 +1,30 @@
 package com.kenti.antezana.sistema_de_gestion_reservas.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.Data;
 
 @Entity
 @Data
 public class Disponibilidad {
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private TipoDeEntrada tipoDeEntradaAdquirido;
-    private Double precio;
-    private Integer cuposTotales;
-    private Integer cuposOcupados;
+    @Enumerated(EnumType.STRING)
+    private TipoDeEntrada tipoDeEntrada;
+    private double precio;
+    private int cuposTotales;
+    private int cuposOcupados;
 
-    public int cuposDisponibles(){
+    public int cuposDisponibles() {
         return Math.max(this.cuposTotales - this.cuposOcupados, 0);
     }
-    public void reservarCupo(){
+
+    public void reservarCupo() {
         this.cuposOcupados++;
     }
 }
