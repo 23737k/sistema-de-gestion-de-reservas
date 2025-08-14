@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("${backend.api.base-path}/eventos/{eventoId}/funciones")
-public class FuncionController {
+public class    FuncionController {
     private final FuncionService funcionService;
 
     @GetMapping
@@ -33,10 +33,11 @@ public class FuncionController {
     }
 
     @PostMapping
-    public ResponseEntity<FuncionRes> crearFuncion(@RequestBody FuncionReq funcion) {
-        FuncionRes funcionRes = funcionService.crearFuncion(funcion);
+    public ResponseEntity<FuncionRes> crearFuncion(@PathVariable("eventoId") Long eventoId,
+                                                   @RequestBody FuncionReq funcionReq) {
+        FuncionRes funcionRes = funcionService.crearFuncion(eventoId, funcionReq);
         return ResponseEntity.created(
-                URI.create("${backend.api.base-path}/eventos/{eventoId}/funciones)" + funcionRes.id()))
+                URI.create("/api/v1/" + "/eventos/" + eventoId + "/funciones/" + funcionRes.id()))
             .body(funcionRes);
     }
 

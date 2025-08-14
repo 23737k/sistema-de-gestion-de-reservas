@@ -1,6 +1,7 @@
 package com.kenti.antezana.sistema_de_gestion_reservas.exception.handler;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.fasterxml.jackson.databind.exc.InvalidTypeIdException;
 import jakarta.persistence.EntityNotFoundException;
@@ -64,38 +65,41 @@ public class GlobalExceptionHandler {
     return ResponseEntity.badRequest().body(response);
   }
 
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ExceptionRes<?>> handleException(HttpMessageNotReadableException e) {
+      Throwable cause = e.getMostSpecificCause();
+        if(cause instanceof InvalidFormatException invalidFormatException)
+            return handleException(invalidFormatException);
+        else{
+            ExceptionRes<?> response = new ExceptionRes<>(400, "Bad request", "Formato inválido en la request", null);
+            return ResponseEntity.badRequest().body(response);
+        }
+    }
+
   @ExceptionHandler(InvalidFormatException.class)
-  public ResponseEntity<ExceptionRes<?>> handleException(InvalidFormatException ex) {
-    Class<?> targetType = ex.getTargetType();
-    String knownValues = Arrays.stream(targetType.getEnumConstants())
-        .map(Object::toString)
-        .collect(Collectors.joining(", "));
-    String errorMessage = "Invalid format: " + ex.getValue() + " is not a valid value for " + targetType.getSimpleName() +
-        ". Known values: " + knownValues;
-    ExceptionRes<?> response = new ExceptionRes<>(400, "Bad request", errorMessage, null );
-    return ResponseEntity.badRequest().body(response);
+  public ResponseEntity<ExceptionRes<?>> handleException(InvalidFormatException e) {
+      Class<?> targetType = e.getTargetType();
+      String errorMessage;
+    if(targetType.isEnum()){
+        String knownValues = Arrays.stream(targetType.getEnumConstants())
+                .map(Object::toString)
+                .collect(Collectors.joining(", "));
+        errorMessage = "Invalid format: " + e.getValue() + " is not a valid value for " + targetType.getSimpleName() +
+                ". Known values: " + knownValues;
+    }
+    else {
+        errorMessage = "Formato incorrecto en el Json";
+    }
+      ExceptionRes<?> response = new ExceptionRes<>(400, "Bad request", errorMessage, null);
+      return ResponseEntity.badRequest().body(response);
   }
 
   @ExceptionHandler(MethodArgumentTypeMismatchException.class)
-  public ResponseEntity<ExceptionRes<?>> handleException(MethodArgumentTypeMismatchException ex) {
-    String errorMessage = "Invalid type: " + ex.getValue() + " is not a valid value for " + Objects.requireNonNull(
-        ex.getRequiredType()).getSimpleName();
+  public ResponseEntity<ExceptionRes<?>> handleException(MethodArgumentTypeMismatchException e) {
+    String errorMessage = "Invalid type: " + e.getValue() + " is not a valid value for " + Objects.requireNonNull(
+        e.getRequiredType()).getSimpleName();
     ExceptionRes<?> response = new ExceptionRes<>(400, "Bad request", errorMessage, null );
     return ResponseEntity.badRequest().body(response);
-  }
-
-
-  @ExceptionHandler(HttpMessageNotReadableException.class)
-  public ResponseEntity<ExceptionRes<?>> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex) {
-    if (ex.getCause() instanceof InvalidTypeIdException invalidTypeIdException) {
-      return handleException(invalidTypeIdException);
-    }
-    if(ex.getCause() instanceof InvalidFormatException invalidFormatException)
-      return handleException(invalidFormatException);
-    else{
-      ExceptionRes<?> response = new ExceptionRes<>(400, "Bad request", "Malformed JSON request", null);
-      return ResponseEntity.badRequest().body(response);
-    }
   }
 
   @ExceptionHandler(Exception.class)

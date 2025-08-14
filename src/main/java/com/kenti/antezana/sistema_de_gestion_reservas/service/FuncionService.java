@@ -6,9 +6,10 @@ import com.kenti.antezana.sistema_de_gestion_reservas.dto.response.FuncionRes;
 import com.kenti.antezana.sistema_de_gestion_reservas.model.Funcion;
 import com.kenti.antezana.sistema_de_gestion_reservas.repository.FuncionRepo;
 import jakarta.persistence.EntityNotFoundException;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -17,27 +18,28 @@ public class FuncionService {
     private final FuncionMapper funcionMapper;
     private final EventoService eventoService;
 
-    public List<FuncionRes> obtenerFunciones(Long funcionId) {
-        List<Funcion> funciones = funcionRepo.findFuncionByEvento_Id(funcionId);
-        return funciones.stream().map(funcionMapper::toRes).toList();
+    public List<FuncionRes> obtenerFunciones(Long eventoId) {
+        validarEvento(eventoId);
+        return funcionRepo.findFuncionByEvento_Id(eventoId).stream().map(funcionMapper::toRes).toList();
+
     }
 
     public FuncionRes obtenerFuncion(Long eventoId, Long funcionId) {
-        if (eventoService.existeEvento(eventoId)) {
-            Funcion funcion = funcionRepo.findById(funcionId)
+        validarEvento(eventoId);
+        Funcion funcion = funcionRepo.findById(funcionId)
                 .orElseThrow(() -> new EntityNotFoundException("Funcion no encontrada"));
-            return funcionMapper.toRes(funcion);
-        } else {
-            throw new EntityNotFoundException("Evento no encontrado");
-        }
+        return funcionMapper.toRes(funcion);
     }
 
-    public FuncionRes crearFuncion(FuncionReq funcionReq) {
+    public FuncionRes crearFuncion(Long eventoId, FuncionReq funcionReq) {
+        validarEvento(eventoId);
         Funcion funcion = funcionMapper.toEntity(funcionReq);
+        funcion.setEvento();
         return funcionMapper.toRes(funcionRepo.save(funcion));
     }
 
-    public FuncionRes actualizarFuncion(Long id, FuncionReq funcionReq) {
+    public FuncionRes actualizarFuncion(Long eventoId, Long id, FuncionReq funcionReq) {
+        validarEvento(eventoId);
         if (funcionRepo.existsById(id)) {
             Funcion funcion = funcionMapper.toEntity(funcionReq);
             funcion.setId(id);
@@ -48,11 +50,17 @@ public class FuncionService {
 
     }
 
-    public void eliminarFuncion(Long id) {
-        if (funcionRepo.existsById(id)) {
+    public void eliminarFuncion(Long eventoId, Long id) {
+        validarEvento(eventoId);
+        if (funcionRepo.existsById(id))
             funcionRepo.deleteById(id);
-        } else {
+        else
             throw new EntityNotFoundException("Funcion no encontrada");
-        }
+
+    }
+
+    private void validarEvento(Long eventoId) {
+        if(!eventoService.existeEvento(eventoId))
+            throw new EntityNotFoundException("Evento no encontrado");
     }
 }
