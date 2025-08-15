@@ -6,13 +6,19 @@ import com.kenti.antezana.sistema_de_gestion_reservas.dto.request.EventoReq;
 import com.kenti.antezana.sistema_de_gestion_reservas.dto.request.FuncionReq;
 import com.kenti.antezana.sistema_de_gestion_reservas.dto.response.EventoRes;
 import com.kenti.antezana.sistema_de_gestion_reservas.dto.response.FuncionRes;
+import com.kenti.antezana.sistema_de_gestion_reservas.exception.TipoDeEntradaDuplicadosException;
+import com.kenti.antezana.sistema_de_gestion_reservas.exception.TipoDeEntradaInvalidaException;
+import com.kenti.antezana.sistema_de_gestion_reservas.model.Disponibilidad;
 import com.kenti.antezana.sistema_de_gestion_reservas.model.Evento;
 import com.kenti.antezana.sistema_de_gestion_reservas.model.Funcion;
+import com.kenti.antezana.sistema_de_gestion_reservas.model.TipoDeEntrada;
 import com.kenti.antezana.sistema_de_gestion_reservas.repository.EventoRepo;
 import com.kenti.antezana.sistema_de_gestion_reservas.repository.FuncionRepo;
 import jakarta.persistence.EntityNotFoundException;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -78,7 +84,9 @@ public class EventoService {
 
         Funcion funcion = funcionMapper.toEntity(funcionReq);
 
-        evento.agregarFuncion(funcion);
+        validarFuncion(evento, funcion);
+
+        evento.getFunciones().add(funcion);
 
         funcionRepo.save(funcion);
         eventoRepo.save(evento);
@@ -93,8 +101,8 @@ public class EventoService {
             .orElseThrow(() -> new EntityNotFoundException("Funcion no encontrada"));
 
         funcionMapper.updateFuncion(funcionReq, funcion);
+        validarFuncion(evento, funcion);
         eventoRepo.save(evento);
-
         return funcionMapper.toRes(funcion);
     }
 
@@ -110,5 +118,22 @@ public class EventoService {
 
     }
 
+    public void validarFuncion(Evento evento, Funcion funcion) {
+        List<Disponibilidad> disponibilidades = funcion.getDisponibilidades();
+        disponibilidades.stream()
+            .filter(d -> !evento.getTipoDeEvento().contieneTipoDeEntrada(d.getTipoDeEntrada()))
+            .findFirst()
+            .ifPresent(d -> {
+                throw new TipoDeEntradaInvalidaException(evento.getTipoDeEvento(),
+                    d.getTipoDeEntrada());
+            });
 
+        Set<TipoDeEntrada> tipoDeEntradaSinDuplicados = new HashSet<>();
+        boolean tieneTipoDeEntradaDuplicados = disponibilidades.stream().anyMatch(disponibilidad ->
+            !tipoDeEntradaSinDuplicados.add(disponibilidad.getTipoDeEntrada()));
+        if (tieneTipoDeEntradaDuplicados) {
+            throw new TipoDeEntradaDuplicadosException(
+                "No pueden haber tipos de entrada duplicados en una misma funcion.");
+        }
+    }
 }

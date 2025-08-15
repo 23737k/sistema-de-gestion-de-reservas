@@ -2,6 +2,7 @@ package com.kenti.antezana.sistema_de_gestion_reservas.exception.handler;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import com.kenti.antezana.sistema_de_gestion_reservas.exception.TipoDeEntradaDuplicadosException;
 import com.kenti.antezana.sistema_de_gestion_reservas.exception.TipoDeEntradaInvalidaException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.ConstraintViolation;
@@ -117,6 +118,12 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(TipoDeEntradaInvalidaException.class)
     public ResponseEntity<ExceptionRes<?>> handleException(TipoDeEntradaInvalidaException e) {
+        ExceptionRes<?> response = new ExceptionRes<>(400, "Bad request", e.getMessage(), null);
+        return ResponseEntity.badRequest().body(response);
+    }
+
+    @ExceptionHandler(TipoDeEntradaDuplicadosException.class)
+    public ResponseEntity<ExceptionRes<?>> handleException(TipoDeEntradaDuplicadosException e) {
         ExceptionRes<?> response = new ExceptionRes<>(400, "Bad request", e.getMessage(), null);
         return ResponseEntity.badRequest().body(response);
     }
