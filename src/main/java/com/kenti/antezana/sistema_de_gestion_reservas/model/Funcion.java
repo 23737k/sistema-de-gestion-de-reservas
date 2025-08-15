@@ -1,11 +1,17 @@
 package com.kenti.antezana.sistema_de_gestion_reservas.model;
 
-import jakarta.persistence.*;
-import lombok.Data;
-
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+import lombok.Data;
 
 @Entity
 @Data
@@ -17,8 +23,6 @@ public class Funcion {
     private LocalTime hora;
     @Embedded
     private Lugar lugar;
-    @ManyToOne
-    private Evento evento;
     @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
     @JoinColumn(name = "funcion_id")
     private List<Disponibilidad> disponibilidades;

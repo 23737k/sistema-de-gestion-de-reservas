@@ -1,7 +1,9 @@
 package com.kenti.antezana.sistema_de_gestion_reservas.controller;
 
 import com.kenti.antezana.sistema_de_gestion_reservas.dto.request.EventoReq;
+import com.kenti.antezana.sistema_de_gestion_reservas.dto.request.FuncionReq;
 import com.kenti.antezana.sistema_de_gestion_reservas.dto.response.EventoRes;
+import com.kenti.antezana.sistema_de_gestion_reservas.dto.response.FuncionRes;
 import com.kenti.antezana.sistema_de_gestion_reservas.service.EventoService;
 import jakarta.validation.Valid;
 import java.net.URI;
@@ -28,9 +30,9 @@ public class EventoController {
         return ResponseEntity.ok(eventoService.obtenerEventos());
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<EventoRes> obtenerEventoPorId(@PathVariable Long id) {
-        return ResponseEntity.ok(eventoService.obtenerEventoPorId(id));
+    @GetMapping("/{eventoId}")
+    public ResponseEntity<EventoRes> obtenerEventoPorId(@PathVariable("eventoId") Long eventoId) {
+        return ResponseEntity.ok(eventoService.obtenerEventoPorId(eventoId));
     }
 
     @PostMapping
@@ -40,17 +42,54 @@ public class EventoController {
             .body(eventoRes);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<EventoRes> modificarEvento(@PathVariable Long id,
-                                                     @RequestBody EventoReq evento) {
-        return ResponseEntity.accepted().body(eventoService.modificarEvento(id, evento));
+    @PutMapping("/{eventoId}")
+    public ResponseEntity<EventoRes> modificarEvento(@PathVariable("eventoId") Long eventoId,
+                                                     @Valid @RequestBody EventoReq evento) {
+        return ResponseEntity.accepted().body(eventoService.modificarEvento(eventoId, evento));
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<EventoRes> eliminarEvento(@PathVariable Long id) {
-        eventoService.eliminarEvento(id);
+    @DeleteMapping("/{eventoId}")
+    public ResponseEntity<Void> eliminarEvento(@PathVariable("eventoId") Long eventoId) {
+        eventoService.eliminarEvento(eventoId);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/{eventoId}/funciones")
+    public ResponseEntity<List<FuncionRes>> obtenerFunciones(
+        @PathVariable("eventoId") Long eventoId) {
+        return ResponseEntity.ok(eventoService.obtenerFunciones(eventoId));
+    }
+
+    @GetMapping("/{eventoId}/funciones/{funcionId}")
+    public ResponseEntity<FuncionRes> obtenerFuncion(@PathVariable("eventoId") Long eventoId,
+                                                     @PathVariable("funcionId") Long funcionId) {
+        return ResponseEntity.ok(eventoService.obtenerFuncion(eventoId, funcionId));
+    }
+
+    @PostMapping("/{eventoId}/funciones")
+    public ResponseEntity<FuncionRes> crearFuncion(@PathVariable("eventoId") Long eventoId,
+                                                   @Valid @RequestBody FuncionReq funcionReq) {
+        FuncionRes funcionRes = eventoService.agregarFuncion(eventoId, funcionReq);
+        return ResponseEntity.created(
+                URI.create("/api/v1/" + "/eventos/" + eventoId + "/funciones/" + funcionRes.id()))
+            .body(funcionRes);
+    }
+
+    @PutMapping("/{eventoId}/funciones/{funcionId}")
+    public ResponseEntity<FuncionRes> modificarFuncion(@PathVariable("eventoId") Long eventoId,
+                                                       @PathVariable("funcionId") Long funcionId,
+                                                       @Valid @RequestBody FuncionReq funcionReq) {
+        return ResponseEntity.accepted()
+            .body(eventoService.actualizarFuncion(eventoId, funcionId, funcionReq));
+    }
+
+    @DeleteMapping("/{eventoId}/funciones/{funcionId}")
+    public ResponseEntity<Void> eliminarFuncion(@PathVariable("eventoId") Long eventoId,
+                                                @PathVariable("funcionId") Long funcionId) {
+        eventoService.eliminarFuncion(eventoId, funcionId);
+        return ResponseEntity.noContent().build();
+    }
+
 
 }
 
