@@ -1,5 +1,6 @@
 package com.kenti.antezana.sistema_de_gestion_reservas.model;
 
+import com.kenti.antezana.sistema_de_gestion_reservas.exception.TipoDeEntradaInvalidaException;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -7,6 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -23,7 +25,17 @@ public class Funcion {
     private LocalTime hora;
     @Embedded
     private Lugar lugar;
+    @ManyToOne
+    private Evento evento;
     @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
     @JoinColumn(name = "funcion_id")
     private List<Disponibilidad> disponibilidades;
+
+    public Disponibilidad encontrarDisponibilidad(TipoDeEntrada tipoDeEntrada) {
+        return disponibilidades.stream()
+            .filter(d -> d.getTipoDeEntrada().equals(tipoDeEntrada))
+            .findFirst().orElseThrow(
+                () -> new TipoDeEntradaInvalidaException(
+                    "Este tipo de entrada no se encuentra disponible para esta funcion"));
+    }
 }

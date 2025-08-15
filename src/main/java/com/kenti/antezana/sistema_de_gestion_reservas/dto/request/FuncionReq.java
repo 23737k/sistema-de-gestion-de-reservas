@@ -1,5 +1,6 @@
 package com.kenti.antezana.sistema_de_gestion_reservas.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.kenti.antezana.sistema_de_gestion_reservas.model.Lugar;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Future;
@@ -14,6 +15,7 @@ public record FuncionReq(
     @NotNull(message = "La fecha no puede estar vacía")
     LocalDate fecha,
     @NotNull(message = "La hora no puede estar vacía")
+    @JsonFormat(pattern = "HH:mm:ss")
     LocalTime hora,
     @Valid
     Lugar lugar,

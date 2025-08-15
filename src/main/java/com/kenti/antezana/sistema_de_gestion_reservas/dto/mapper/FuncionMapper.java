@@ -6,7 +6,7 @@ import com.kenti.antezana.sistema_de_gestion_reservas.model.Funcion;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 
-@Mapper(componentModel = "spring", uses = DisponibilidadMapper.class)
+@Mapper(componentModel = "spring", uses = {DisponibilidadMapper.class})
 public interface FuncionMapper {
     Funcion toEntity(FuncionReq funcionReq);
 

@@ -10,6 +10,9 @@ public class TipoDeEntradaInvalidaException extends RuntimeException {
 
     }
 
+    public TipoDeEntradaInvalidaException(String s) {
+    }
+
     private static String crearMensaje(TipoDeEvento tipoDeEvento, TipoDeEntrada tipoDeEntrada) {
         String entradasValidas = tipoDeEvento.getTiposDeEntradas().stream().map(Enum::name)
             .collect(Collectors.joining(", "));

@@ -83,10 +83,10 @@ public class EventoService {
             .orElseThrow(() -> new EntityNotFoundException("Evento no encontrado"));
 
         Funcion funcion = funcionMapper.toEntity(funcionReq);
-
         validarFuncion(evento, funcion);
 
         evento.getFunciones().add(funcion);
+        funcion.setEvento(evento);
 
         funcionRepo.save(funcion);
         eventoRepo.save(evento);
@@ -96,6 +96,7 @@ public class EventoService {
     public FuncionRes actualizarFuncion(Long eventoId, Long id, FuncionReq funcionReq) {
         Evento evento = eventoRepo.findById(eventoId)
             .orElseThrow(() -> new EntityNotFoundException("Evento no encontrado"));
+
         Funcion funcion = evento.getFunciones().stream()
             .filter(f -> f.getId().equals(id)).findFirst()
             .orElseThrow(() -> new EntityNotFoundException("Funcion no encontrada"));
@@ -135,5 +136,10 @@ public class EventoService {
             throw new TipoDeEntradaDuplicadosException(
                 "No pueden haber tipos de entrada duplicados en una misma funcion.");
         }
+    }
+
+    public Funcion encontrarFuncionPorId(Long id) {
+        return funcionRepo.findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("Funcion no encontrada"));
     }
 }

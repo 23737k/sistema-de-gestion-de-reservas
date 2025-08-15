@@ -7,7 +7,6 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import java.util.List;
 import lombok.Data;
@@ -22,7 +21,6 @@ public class Evento {
     private String descripcion;
     @Enumerated(EnumType.STRING)
     private TipoDeEvento tipoDeEvento;
-    @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
-    @JoinColumn(name = "eventoId")
+    @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, mappedBy = "evento")
     private List<Funcion> funciones;
 }

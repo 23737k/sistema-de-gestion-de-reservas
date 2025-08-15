@@ -1,5 +1,6 @@
 package com.kenti.antezana.sistema_de_gestion_reservas.model;
 
+import com.kenti.antezana.sistema_de_gestion_reservas.exception.DisponibilidadAgotadaException;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -25,6 +26,11 @@ public class Disponibilidad {
     }
 
     public void reservarCupo() {
-        this.cuposOcupados++;
+        if (cuposDisponibles() > 0) {
+            this.cuposOcupados++;
+        } else {
+            throw new DisponibilidadAgotadaException(
+                "Error al reservar cupo. La disponibilidad se encuentra agotada.");
+        }
     }
 }
