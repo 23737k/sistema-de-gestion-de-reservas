@@ -11,7 +11,7 @@
 	<groupId>com.kenti.antezana</groupId>
 	<artifactId>sistema-de-gestion-de-reservas</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>sistema-de-gestion-reservas</name>
+	<name>sistema-de-gestion-de-reservas</name>
 	<description>Sistema de Gestion de Reservas</description>
 	<url/>
 	<licenses>
