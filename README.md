@@ -30,7 +30,7 @@ Para comenzar con este proyecto, necesitarás tener lo siguiente instalado en tu
   
 2. Navega al directorio del proyecto:
    ```
-   cd sistema-de-gestion-reservas
+   cd sistema-de-gestion-de-reservas
    ```
 3. Instala las dependencias (asumiendo que Maven está instalado):
    ```
