@@ -31,10 +31,10 @@ public class Cliente {
     @JoinColumn(name = "cliente_id")
     private List<PaseGratis> pasesGratis;
 
-    public List<Reserva> obtenerReservasAsistidas(int year) {
+    public List<Reserva> obtenerReservasAsistidas(int anio) {
         return reservas.stream()
             .filter(reserva ->
                 reserva.getEstadoReserva().equals(EstadoReserva.ASISTIDO)
-                    && reserva.getFechaCreacion().getYear() == year).toList();
+                    && reserva.getFechaCreacion().getYear() == anio).toList();
     }
 }

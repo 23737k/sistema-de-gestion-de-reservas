@@ -17,6 +17,7 @@ import com.kenti.antezana.sistema_de_gestion_reservas.model.Reserva;
 import com.kenti.antezana.sistema_de_gestion_reservas.repository.ClienteRepo;
 import com.kenti.antezana.sistema_de_gestion_reservas.repository.ReservaRepo;
 import jakarta.persistence.EntityNotFoundException;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -67,6 +68,8 @@ public class ClienteService {
         }
     }
 
+
+
     public Cliente encontrarCliente(Long id) {
         return clienteRepo.findById(id)
             .orElseThrow(() -> new EntityNotFoundException("Cliente no encontrado"));
@@ -107,7 +110,7 @@ public class ClienteService {
         Optional<PaseGratis> paseGratis = pasesGratis.stream().filter(p -> !p.isUsado()).findAny();
         if (paseGratis.isPresent()) {
             paseGratis.get().setUsado(true);
-            reserva.setMontoTotal(0);
+            reserva.setMontoTotal(BigDecimal.ZERO);
             reserva.setEstadoReserva(EstadoReserva.PAGADO);
             reserva.setBonificado(true);
         }
@@ -130,6 +133,11 @@ public class ClienteService {
         if (nuevoEstado.equals(EstadoReserva.ASISTIDO)) {
             paseGratisService.calcularPaseGratis(encontrarCliente(clienteId));
         }
+
+        if (nuevoEstado.equals(EstadoReserva.CANCELADO)) {
+            eventoService.devolverCupo(reserva.getFuncion().getId(),reserva.getTipoDeEntrada());
+        }
+
         return reservaMapper.toRes(reservaRepo.save(reserva));
     }
 

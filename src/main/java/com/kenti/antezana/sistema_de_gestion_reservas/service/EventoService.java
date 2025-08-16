@@ -11,6 +11,7 @@ import com.kenti.antezana.sistema_de_gestion_reservas.exception.TipoDeEntradaInv
 import com.kenti.antezana.sistema_de_gestion_reservas.model.Disponibilidad;
 import com.kenti.antezana.sistema_de_gestion_reservas.model.Evento;
 import com.kenti.antezana.sistema_de_gestion_reservas.model.Funcion;
+import com.kenti.antezana.sistema_de_gestion_reservas.model.Reserva;
 import com.kenti.antezana.sistema_de_gestion_reservas.model.TipoDeEntrada;
 import com.kenti.antezana.sistema_de_gestion_reservas.repository.EventoRepo;
 import com.kenti.antezana.sistema_de_gestion_reservas.repository.FuncionRepo;
@@ -19,6 +20,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -125,8 +127,14 @@ public class EventoService {
             .filter(d -> !evento.getTipoDeEvento().contieneTipoDeEntrada(d.getTipoDeEntrada()))
             .findFirst()
             .ifPresent(d -> {
-                throw new TipoDeEntradaInvalidaException(evento.getTipoDeEvento(),
-                    d.getTipoDeEntrada());
+                String entradasValidas = evento.getTipoDeEvento().getTiposDeEntradas().stream()
+                    .map(Enum::name)
+                    .collect(Collectors.joining(", "));
+
+                String mensaje = "La función contiene un tipo de entrada '" + d.getTipoDeEntrada().name() +
+                    "' que no corresponde al tipo de evento '" + evento.getTipoDeEvento().name() + "'. " +
+                    "Tipos de entrada válidos para este evento: " + entradasValidas;
+                throw new TipoDeEntradaInvalidaException(mensaje);
             });
 
         Set<TipoDeEntrada> tipoDeEntradaSinDuplicados = new HashSet<>();
@@ -142,4 +150,14 @@ public class EventoService {
         return funcionRepo.findById(id)
             .orElseThrow(() -> new EntityNotFoundException("Funcion no encontrada"));
     }
+
+    public void devolverCupo(Long funcionId, TipoDeEntrada tipoDeEntrada ) {
+        Funcion funcion = encontrarFuncionPorId(funcionId);
+        Disponibilidad disponibilidad = funcion
+            .encontrarDisponibilidad(tipoDeEntrada);
+
+        disponibilidad.devolverCupo();
+        funcionRepo.save(funcion);
+    }
+
 }

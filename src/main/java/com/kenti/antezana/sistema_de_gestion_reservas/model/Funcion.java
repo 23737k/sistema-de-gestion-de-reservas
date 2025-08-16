@@ -13,6 +13,7 @@ import jakarta.persistence.OneToMany;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.Data;
 
 @Entity
@@ -34,8 +35,16 @@ public class Funcion {
     public Disponibilidad encontrarDisponibilidad(TipoDeEntrada tipoDeEntrada) {
         return disponibilidades.stream()
             .filter(d -> d.getTipoDeEntrada().equals(tipoDeEntrada))
-            .findFirst().orElseThrow(
-                () -> new TipoDeEntradaInvalidaException(
-                    "Este tipo de entrada no se encuentra disponible para esta funcion"));
+            .findFirst()
+            .orElseThrow(() -> {
+                String entradasValidas = disponibilidades.stream()
+                    .map(d -> d.getTipoDeEntrada().name())
+                    .collect(Collectors.joining(", "));
+
+                String mensaje = "El tipo de entrada '" + tipoDeEntrada.name() + "' no está disponible para esta función. "
+                    + "Tipos disponibles: " + entradasValidas;
+
+                return new TipoDeEntradaInvalidaException(mensaje);
+            });
     }
 }

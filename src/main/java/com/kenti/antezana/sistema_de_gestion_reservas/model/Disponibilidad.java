@@ -7,6 +7,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import java.math.BigDecimal;
 import lombok.Data;
 
 @Entity
@@ -17,7 +18,7 @@ public class Disponibilidad {
     private Long id;
     @Enumerated(EnumType.STRING)
     private TipoDeEntrada tipoDeEntrada;
-    private double precio;
+    private BigDecimal precio;
     private int cuposTotales;
     private int cuposOcupados;
 
@@ -32,5 +33,10 @@ public class Disponibilidad {
             throw new DisponibilidadAgotadaException(
                 "Error al reservar cupo. La disponibilidad se encuentra agotada.");
         }
+    }
+
+    public void devolverCupo() {
+        if (this.cuposOcupados > 0)
+            this.cuposOcupados --;
     }
 }

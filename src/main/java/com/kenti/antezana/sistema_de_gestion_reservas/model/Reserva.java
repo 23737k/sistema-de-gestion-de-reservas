@@ -1,11 +1,14 @@
 package com.kenti.antezana.sistema_de_gestion_reservas.model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,12 +28,13 @@ public class Reserva {
     @ManyToOne
     @JoinColumn(name = "funcion_id")
     private Funcion funcion;
+    @Enumerated(EnumType.STRING)
     private TipoDeEntrada tipoDeEntrada;
     @ManyToOne
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
+    @Enumerated(EnumType.STRING)
     private EstadoReserva estadoReserva;
-    private double montoTotal = 0;
+    private BigDecimal montoTotal = BigDecimal.ZERO;
     private boolean bonificado = false;
-
 }
