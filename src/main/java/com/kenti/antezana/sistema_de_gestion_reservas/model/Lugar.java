@@ -3,9 +3,16 @@ package com.kenti.antezana.sistema_de_gestion_reservas.model;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Embeddable;
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Embeddable
 public class Lugar {
     @Schema(description = "Dirección de la función", example = "Av. Siempre Viva")

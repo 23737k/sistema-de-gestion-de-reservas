@@ -69,7 +69,6 @@ public class ClienteService {
     }
 
 
-
     public Cliente encontrarCliente(Long id) {
         return clienteRepo.findById(id)
             .orElseThrow(() -> new EntityNotFoundException("Cliente no encontrado"));
@@ -131,7 +130,8 @@ public class ClienteService {
 
         reserva.setEstadoReserva(nuevoEstado);
         if (nuevoEstado.equals(EstadoReserva.ASISTIDO)) {
-            paseGratisService.calcularPaseGratis(encontrarCliente(clienteId));
+            Cliente cliente = paseGratisService.calcularPaseGratis(encontrarCliente(clienteId));
+            clienteRepo.save(cliente);
         }
 
         if (nuevoEstado.equals(EstadoReserva.CANCELADO)) {
@@ -140,6 +140,7 @@ public class ClienteService {
 
         return reservaMapper.toRes(reservaRepo.save(reserva));
     }
+
 
 
 }

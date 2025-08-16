@@ -7,10 +7,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor
 public class PaseGratisService {
 
-    public void calcularPaseGratis(Cliente cliente) {
+    public Cliente calcularPaseGratis(Cliente cliente) {
         if (calificaParaPaseGratis(cliente)) {
             PaseGratis paseGratis = PaseGratis.builder()
                 .fechaDeOtorgamiento(LocalDate.now())
@@ -18,17 +17,17 @@ public class PaseGratisService {
                 .build();
             cliente.getPasesGratis().add(paseGratis);
         }
+        return cliente;
     }
 
     public boolean calificaParaPaseGratis(Cliente cliente) {
-        boolean tienePasesGratisEsteAnio = cliente.getPasesGratis().stream()
-            .anyMatch(p -> !p.isUsado() &&
-                p.getFechaDeOtorgamiento().getYear() != LocalDate.now().getYear());
+        boolean noTienePaseEsteAnio = cliente.getPasesGratis().stream()
+            .noneMatch(p -> p.getFechaDeOtorgamiento().getYear() == LocalDate.now().getYear());
 
         boolean tieneMasDeCincoEventosAsistidos =
-            (long) cliente.obtenerReservasAsistidas(LocalDate.now().getYear()).size() >= 5;
+            cliente.obtenerReservasAsistidas(LocalDate.now().getYear()).size() >= 5;
 
-        return tieneMasDeCincoEventosAsistidos && tienePasesGratisEsteAnio;
+        return tieneMasDeCincoEventosAsistidos && noTienePaseEsteAnio;
     }
 
 }
