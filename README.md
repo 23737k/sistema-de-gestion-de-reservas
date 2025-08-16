@@ -34,7 +34,7 @@ Para comenzar con este proyecto, necesitarás tener lo siguiente instalado en tu
    ```
 3. Instala las dependencias (asumiendo que Maven está instalado):
    ```
-   mvn clean install
+   mvn clean install -DskipTests
    ```
 4. Ejecuta el proyecto:
    ```
@@ -43,7 +43,7 @@ Para comenzar con este proyecto, necesitarás tener lo siguiente instalado en tu
 
 5. Accede a la documentación de la API usando Swagger UI:
 
-   Abre un navegador web y ve a http://localhost:8080/doc/swagger-ui.html
+   Abre un navegador web y ve a http://localhost:8080/swagger-ui.html
 
 > La aplicación estará disponible en http://localhost:8080
 
