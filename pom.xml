@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.kenti.antezana</groupId>
-	<artifactId>sistema-de-gestion-reservas</artifactId>
+	<artifactId>sistema-de-gestion-de-reservas</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>sistema-de-gestion-reservas</name>
 	<description>Sistema de Gestion de Reservas</description>
