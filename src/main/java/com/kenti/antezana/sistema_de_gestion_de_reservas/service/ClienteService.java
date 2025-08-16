@@ -74,6 +74,10 @@ public class ClienteService {
             .orElseThrow(() -> new EntityNotFoundException("Cliente no encontrado"));
     }
 
+    public List<ReservaRes> obtenerReservas(Long clienteId) {
+        List<Reserva> reservas = encontrarCliente(clienteId).getReservas();
+        return reservas.stream().map(reservaMapper::toRes).toList();
+    }
 
     public ReservaRes obtenerReserva(Long clienteId, Long reservaId) {
         Reserva reserva = encontrarCliente(clienteId).getReservas().stream()
@@ -140,7 +144,5 @@ public class ClienteService {
 
         return reservaMapper.toRes(reservaRepo.save(reserva));
     }
-
-
 
 }

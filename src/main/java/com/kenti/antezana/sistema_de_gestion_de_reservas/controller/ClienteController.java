@@ -70,6 +70,12 @@ public class ClienteController {
         return ResponseEntity.ok(clienteService.obtenerReserva(clienteId, reservaId));
     }
 
+    @GetMapping("/{clienteId}/reservas")
+    @Operation(summary = "Obtiene todas las reservas de un cliente", tags = {"Reservas"})
+    public ResponseEntity<List<ReservaRes>> obtenerReservas(@PathVariable Long clienteId) {
+        return ResponseEntity.ok(clienteService.obtenerReservas(clienteId));
+    }
+
     @PostMapping("/{clienteId}/reservas")
     @Operation(summary = "Crea una nueva reserva para un cliente en un evento", tags = {"Reservas"})
     public ResponseEntity<ReservaRes> crearReserva(@PathVariable Long clienteId,
@@ -90,6 +96,8 @@ public class ClienteController {
             clienteService.modificarEstadoReserva(clienteId, reservaId, estadoReservaReq);
         return ResponseEntity.accepted().body(reserva);
     }
+
+
 
 
 }
