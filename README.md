@@ -28,20 +28,25 @@ Para comenzar con este proyecto, necesitarás tener lo siguiente instalado en tu
    git clone https://github.com/23737k/sistema-de-gestion-de-reservas.git
    ```
   
-2. Navega al directorio del proyecto:
+
+2. Ejecuta el siguiente script para crear la base de datos: [script](/scripts/create-db.sql)
+
+
+3. Navega al directorio del proyecto:
    ```
    cd sistema-de-gestion-de-reservas
    ```
-3. Instala las dependencias (asumiendo que Maven está instalado):
+4. Instala las dependencias (asumiendo que Maven está instalado):
    ```
    mvn clean install -DskipTests
    ```
-4. Ejecuta el proyecto:
+
+5. Ejecuta el proyecto:
    ```
    mvn spring-boot:run
    ```
 
-5. Accede a la documentación de la API usando Swagger UI:
+6. Accede a la documentación de la API usando Swagger UI:
 
    Abre un navegador web y ve a http://localhost:8080/swagger-ui.html
 
@@ -54,6 +59,6 @@ Diagrama de Clases
 
 Diagrama DER
 -
-![Class Diagram](assets/diagrama-de-clases.png)
+![ERD Diagrama](assets/diagrama-de-entidad-relacion.png)
 
 
