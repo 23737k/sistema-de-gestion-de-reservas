@@ -19,7 +19,7 @@ Para comenzar con este proyecto, necesitarás tener lo siguiente instalado en tu
 2. Si tienes una configuración diferente de MySQL, actualiza el archivo [application.yml](src/main/resources/application.yml) en consecuencia.
 
 
-3. Ejecuta el siguiente script para crear la base de datos: [script](/scripts/create-db.sql)
+3. Ejecuta el siguiente script para crear la base de datos: [script](/scripts/create-db.sql). 
 
 ## 2) Para compilar y ejecutar el proyecto
 
@@ -29,7 +29,8 @@ Para comenzar con este proyecto, necesitarás tener lo siguiente instalado en tu
    ```
   
 
-2. Ejecuta el siguiente script para crear la base de datos: [script](/scripts/create-db.sql)
+2. Ejecuta el siguiente script para crear la base de datos: [script](/scripts/create-db.sql). 
+ Se recomienda usar phpmyadmin para importar el mismo
 
 
 3. Navega al directorio del proyecto:
@@ -102,7 +103,7 @@ A continuación se enumeran los requisitos y cómo se resolvieron:
 
 Evento:
 
-[GET /api/v1/eventos](http://localhost:8080/swagger-ui/index.html#/Funciones/obtenerFunciones)
+[GET /api/v1/eventos](http://localhost:8080/swagger-ui/index.html#/Eventos/obtenerEventos)
 
 ````Json
 {
