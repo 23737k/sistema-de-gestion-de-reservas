@@ -93,7 +93,7 @@ class ClienteServiceTest {
         evento.getFunciones().add(funcion);
 
         cliente = new Cliente(1L, "Juan", "Perez", "juan.perez@example.com","1122334455",
-            DNI, "12345678", new ArrayList<>(), new ArrayList<>());
+            DNI, "12345678", new ArrayList<>(), new ArrayList<>(),null);
 
         clienteReq = new ClienteReq("Juan", "Perez", "juan.perez@example.com","1122334455",
             DNI,"12345678");
@@ -192,7 +192,7 @@ class ClienteServiceTest {
     void deberiaActualizarCliente() {
         Cliente copiaClienteViejo =  new Cliente(
             cliente.getId(),cliente.getNombre(),cliente.getApellido(),cliente.getEmail(),cliente.getTelefono(),cliente.getTipoDeDocumento(),cliente.getDocumento(),
-            cliente.getReservas(),cliente.getPasesGratis());
+            cliente.getReservas(),cliente.getPasesGratis(),null);
 
         ClienteReq clienteActualizadoReq =
             new ClienteReq("NombreNuevo","Perez","juan.perez@example.com","1122334455",DNI,"12345678");

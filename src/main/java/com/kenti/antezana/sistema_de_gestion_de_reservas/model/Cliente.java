@@ -1,14 +1,7 @@
 package com.kenti.antezana.sistema_de_gestion_de_reservas.model;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
+
 import java.util.List;
 
 import lombok.*;
@@ -35,6 +28,8 @@ public class Cliente {
     @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
     @JoinColumn(name = "cliente_id")
     private List<PaseGratis> pasesGratis;
+    @OneToOne(cascade = CascadeType.ALL)
+    private Usuario usuario;
 
     public List<Reserva> obtenerReservasAsistidas(int anio) {
         return reservas.stream()

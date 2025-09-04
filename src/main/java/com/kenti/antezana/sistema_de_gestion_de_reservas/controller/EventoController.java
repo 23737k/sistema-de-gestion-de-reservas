@@ -12,6 +12,7 @@ import java.net.URI;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -49,6 +50,7 @@ public class EventoController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(
         summary = "Crea un nuevo evento",
         description = "Registra un nuevo evento en el sistema con los datos proporcionados en el request, incluyendo nombre, descripción y tipo de evento.",
@@ -61,6 +63,7 @@ public class EventoController {
     }
 
     @PutMapping("/{eventoId}")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(
         summary = "Modifica un evento existente",
         description = "Actualiza los datos de un evento identificado por su ID, como nombre, descripción o tipo de evento.",
@@ -72,6 +75,7 @@ public class EventoController {
     }
 
     @DeleteMapping("/{eventoId}")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(
         summary = "Elimina un evento",
         description = "Elimina un evento del sistema usando su ID y todas las funciones asociadas a él.",
@@ -105,6 +109,7 @@ public class EventoController {
     }
 
     @PostMapping("/{eventoId}/funciones")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(
         summary = "Crea una nueva función para un evento",
         description = "Agrega una función a un evento existente, indicando fecha, hora y capacidad de entradas.",
@@ -119,6 +124,7 @@ public class EventoController {
     }
 
     @PutMapping("/{eventoId}/funciones/{funcionId}")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(
         summary = "Modifica una función de un evento",
         description = "Actualiza los datos de una función de un evento, como fecha, hora o capacidad de entradas.",
@@ -132,6 +138,7 @@ public class EventoController {
     }
 
     @DeleteMapping("/{eventoId}/funciones/{funcionId}")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(
         summary = "Elimina una función de un evento",
         description = "Elimina una función específica de un evento, liberando todas las entradas asociadas.",

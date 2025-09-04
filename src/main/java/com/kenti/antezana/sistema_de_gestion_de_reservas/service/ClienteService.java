@@ -8,14 +8,10 @@ import com.kenti.antezana.sistema_de_gestion_de_reservas.dto.request.ReservaReq;
 import com.kenti.antezana.sistema_de_gestion_de_reservas.dto.response.ClienteRes;
 import com.kenti.antezana.sistema_de_gestion_de_reservas.dto.response.ReservaRes;
 import com.kenti.antezana.sistema_de_gestion_de_reservas.exception.CambioDeEstadoInvalidoException;
-import com.kenti.antezana.sistema_de_gestion_de_reservas.model.Cliente;
-import com.kenti.antezana.sistema_de_gestion_de_reservas.model.Disponibilidad;
-import com.kenti.antezana.sistema_de_gestion_de_reservas.model.EstadoReserva;
-import com.kenti.antezana.sistema_de_gestion_de_reservas.model.Funcion;
-import com.kenti.antezana.sistema_de_gestion_de_reservas.model.PaseGratis;
-import com.kenti.antezana.sistema_de_gestion_de_reservas.model.Reserva;
+import com.kenti.antezana.sistema_de_gestion_de_reservas.model.*;
 import com.kenti.antezana.sistema_de_gestion_de_reservas.repository.ClienteRepo;
 import com.kenti.antezana.sistema_de_gestion_de_reservas.repository.ReservaRepo;
+import com.kenti.antezana.sistema_de_gestion_de_reservas.security.dto.RegisterReq;
 import jakarta.persistence.EntityNotFoundException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -143,6 +139,19 @@ public class ClienteService {
         }
 
         return reservaMapper.toRes(reservaRepo.save(reserva));
+    }
+
+    public Cliente crearCliente(RegisterReq req, Usuario usuario){
+        Cliente cliente = Cliente.builder()
+                .nombre(req.nombre())
+                .apellido(req.apellido())
+                .email(req.email())
+                .telefono(req.telefono())
+                .documento(req.documento())
+                .tipoDeDocumento(req.tipoDeDocumento())
+                .usuario(usuario)
+                .build();
+        return clienteRepo.save(cliente);
     }
 
 }

@@ -42,13 +42,13 @@ public class ClienteController {
         return ResponseEntity.ok(clienteService.obtenerCliente(clienteId));
     }
 
-    @PostMapping
-    @Operation(summary = "Registra un nuevo cliente en el sistema", tags = {"Clientes"})
-    public ResponseEntity<ClienteRes> crearCliente(@RequestBody @Valid ClienteReq clienteReq) {
-        ClienteRes clienteRes = clienteService.crearCliente(clienteReq);
-        return ResponseEntity.created(URI.create("/api/v1/clientes/" + clienteRes.id()))
-            .body(clienteRes);
-    }
+//    @PostMapping
+//    @Operation(summary = "Registra un nuevo cliente en el sistema", tags = {"Clientes"})
+//    public ResponseEntity<ClienteRes> crearCliente(@RequestBody @Valid ClienteReq clienteReq) {
+//        ClienteRes clienteRes = clienteService.crearCliente(clienteReq);
+//        return ResponseEntity.created(URI.create("/api/v1/clientes/" + clienteRes.id()))
+//            .body(clienteRes);
+//    }
 
     @PutMapping("/{clienteId}")
     @Operation(summary = "Actualiza la información de un cliente existente", tags = {"Clientes"})

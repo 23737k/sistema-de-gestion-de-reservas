@@ -1,7 +1,7 @@
 package com.kenti.antezana.sistema_de_gestion_de_reservas.security.service;
 
 import com.kenti.antezana.sistema_de_gestion_de_reservas.exception.UserAlreadyExistsException;
-import com.kenti.antezana.sistema_de_gestion_de_reservas.model.User;
+import com.kenti.antezana.sistema_de_gestion_de_reservas.model.Usuario;
 import com.kenti.antezana.sistema_de_gestion_de_reservas.security.dto.AuthReq;
 import com.kenti.antezana.sistema_de_gestion_de_reservas.security.dto.AuthRes;
 import com.kenti.antezana.sistema_de_gestion_de_reservas.security.dto.RegisterReq;
@@ -39,9 +39,9 @@ public class AuthService {
         if(userService.userExists(req.email()))
             throw new UserAlreadyExistsException("This email is already registered");
 
-        User user = userService.crearUsuario(req);
+        Usuario usuario = userService.crearUsuario(req);
 
-        Token token = new Token(jwtService.getAccessToken(user));
+        Token token = new Token(jwtService.getAccessToken(usuario));
         tokenService.save(token);
         return new AuthRes(token.getToken());
 

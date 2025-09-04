@@ -15,6 +15,8 @@ import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -157,6 +159,18 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ExceptionRes<?>> handleException(UserAlreadyExistsException e) {
         ExceptionRes<?> response = new ExceptionRes<>(400, "Bad request", "This user is already registered", null);
         return ResponseEntity.badRequest().body(response);
+    }
+
+    @ExceptionHandler(AuthorizationDeniedException.class)
+    public ResponseEntity<ExceptionRes<?>> handleException(AuthorizationDeniedException e) {
+        ExceptionRes<?> response = new ExceptionRes<>(401, "Unauthorized", e.getMessage(), null);
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<ExceptionRes<?>> handleException(BadCredentialsException ex) {
+        ExceptionRes<?> response =  new ExceptionRes<>(401, "Unauthorized", ex.getMessage(), null );
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
     }
 
     @ExceptionHandler(Exception.class)
