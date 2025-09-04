@@ -7,6 +7,7 @@ import com.kenti.antezana.sistema_de_gestion_de_reservas.dto.response.ClienteRes
 import com.kenti.antezana.sistema_de_gestion_de_reservas.dto.response.ReservaRes;
 import com.kenti.antezana.sistema_de_gestion_de_reservas.service.ClienteService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import java.net.URI;
 import java.util.List;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("${backend.api.base-path}/clientes")
+@SecurityRequirement(name = "bearer-jwt")
 public class ClienteController {
     private final ClienteService clienteService;
 

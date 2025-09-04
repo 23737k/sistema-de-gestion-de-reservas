@@ -6,6 +6,7 @@ import com.kenti.antezana.sistema_de_gestion_de_reservas.dto.response.EventoRes;
 import com.kenti.antezana.sistema_de_gestion_de_reservas.dto.response.FuncionRes;
 import com.kenti.antezana.sistema_de_gestion_de_reservas.service.EventoService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import java.net.URI;
 import java.util.List;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("${backend.api.base-path}/eventos")
 @RequiredArgsConstructor
+@SecurityRequirement(name = "bearer-jwt")
 public class EventoController {
     private final EventoService eventoService;
 

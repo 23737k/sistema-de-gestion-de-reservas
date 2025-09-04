@@ -1,0 +1,14 @@
+CREATE TABLE `user`
+(
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(20) NOT NULL UNIQUE,
+    password VARCHAR(128) NOT NULL,
+    cliente_id BIGINT,
+    rol VARCHAR(20),
+    CONSTRAINT fk_cliente FOREIGN KEY (cliente_id) REFERENCES cliente(id)
+);
+
+CREATE TABLE token(
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    token VARCHAR(1024) NOT NULL
+);

@@ -17,3 +17,8 @@ spring:
 backend:
   api:
     base-path: /api/v1
+
+jwt:
+  secret-key: ${SECRET_KEY:bW9kZXJuc3VpdHBlcmhhcHNmaXJlcGxhY2ViYWxhbmNlY2VydGFpbmx5d2hlbnRhaWw=}
+  access-token:
+    expiration: 3600000 # 1 hora

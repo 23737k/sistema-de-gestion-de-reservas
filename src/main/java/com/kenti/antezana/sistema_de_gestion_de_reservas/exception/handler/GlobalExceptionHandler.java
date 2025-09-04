@@ -3,10 +3,7 @@ package com.kenti.antezana.sistema_de_gestion_de_reservas.exception.handler;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
-import com.kenti.antezana.sistema_de_gestion_de_reservas.exception.CambioDeEstadoInvalidoException;
-import com.kenti.antezana.sistema_de_gestion_de_reservas.exception.DisponibilidadAgotadaException;
-import com.kenti.antezana.sistema_de_gestion_de_reservas.exception.TipoDeEntradaDuplicadosException;
-import com.kenti.antezana.sistema_de_gestion_de_reservas.exception.TipoDeEntradaInvalidaException;
+import com.kenti.antezana.sistema_de_gestion_de_reservas.exception.*;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
@@ -153,6 +150,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(CambioDeEstadoInvalidoException.class)
     public ResponseEntity<ExceptionRes<?>> handleException(CambioDeEstadoInvalidoException e) {
         ExceptionRes<?> response = new ExceptionRes<>(400, "Bad request", e.getMessage(), null);
+        return ResponseEntity.badRequest().body(response);
+    }
+
+    @ExceptionHandler(UserAlreadyExistsException.class)
+    public ResponseEntity<ExceptionRes<?>> handleException(UserAlreadyExistsException e) {
+        ExceptionRes<?> response = new ExceptionRes<>(400, "Bad request", "This user is already registered", null);
         return ResponseEntity.badRequest().body(response);
     }
 
