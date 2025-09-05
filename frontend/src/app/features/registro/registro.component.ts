@@ -18,17 +18,16 @@ export class RegistroComponent {
     this.registroForm = this.fb.group({
       nombre: ['', Validators.required],
       apellido: ['', Validators.required],
-      documento: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
+      documento: ['', [Validators.required, Validators.pattern(/^\d{8}$/)]],
       tipo_de_documento: ['', Validators.required],
-      telefono: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
+      telefono: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
+      password: ['', [Validators.required, Validators.minLength(6)]]
     });
   }
 
   onSubmit() {
       if (this.registroForm.valid) {
-        console.log('Datos enviados:', this.registroForm.value);
         const request : RegistroReq= {
           nombre: this.registroForm.value['nombre'],
           apellido: this.registroForm.value['apellido'],

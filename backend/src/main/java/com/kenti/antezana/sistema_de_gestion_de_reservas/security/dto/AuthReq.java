@@ -14,5 +14,4 @@ public class AuthReq {
     @NotBlank
     @Schema(example = "P@ssw0rd!")
     private String password;
-
 }

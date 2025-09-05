@@ -1,6 +1,5 @@
 package com.kenti.antezana.sistema_de_gestion_de_reservas.service;
 
-import com.kenti.antezana.sistema_de_gestion_de_reservas.model.Cliente;
 import com.kenti.antezana.sistema_de_gestion_de_reservas.model.Rol;
 import com.kenti.antezana.sistema_de_gestion_de_reservas.model.Usuario;
 import com.kenti.antezana.sistema_de_gestion_de_reservas.repository.UserRepo;
@@ -27,32 +26,19 @@ public class UserService {
     }
 
     @Transactional
-    public Usuario save(Usuario usuario) {
-        return userRepo.save(usuario);
-    }
-
-    @Transactional
-    public Usuario crearUsuario(RegisterReq req){
+    public Usuario crearUsuarioCliente(RegisterReq req){
         Usuario usuario = Usuario.builder()
                 .email(req.email())
                 .password(passwordEncoder.encode(req.password()))
-                .rol(req.rol())
+                .rol(Rol.CLIENTE)
                 .build();
-
-        if(usuario.getRol().equals(Rol.CLIENTE)){
-            clienteService.crearCliente(req, usuario);
-        }
-
+        clienteService.crearCliente(req, usuario);
         return userRepo.save(usuario);
     }
 
-
-
-    public void deleteById(Long id) {
-        if (!userRepo.existsById(id)) {
-            throw new UsernameNotFoundException("User with id " + id + " not found");
-        }
-        userRepo.deleteById(id);
+    public Usuario crearUsuarioAdmin(Usuario usuario){
+        usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
+        return userRepo.save(usuario);
     }
 
 

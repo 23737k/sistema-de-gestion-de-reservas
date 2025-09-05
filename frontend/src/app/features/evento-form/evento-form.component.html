@@ -1,0 +1,141 @@
+<form [formGroup]="eventForm" (ngSubmit)="submit()" class="container mt-4">
+
+  <div class="mb-3">
+    <label for="nombre" class="form-label">Nombre del Evento *</label>
+    <input id="nombre" type="text" class="form-control" formControlName="nombre"
+           [ngClass]="{'is-invalid': eventForm.get('nombre')?.invalid && eventForm.get('nombre')?.touched}">
+    <div class="invalid-feedback">
+      El nombre es obligatorio.
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <label for="descripcion" class="form-label">Descripción</label>
+    <textarea id="descripcion" class="form-control" formControlName="descripcion" rows="3" [ngClass]="{'is-invalid': eventForm.get('descripcion')?.invalid && eventForm.get('descripcion')?.touched}"></textarea>
+    <div class="invalid-feedback">Descripcion obligatoria</div>
+  </div>
+
+  <div class="mb-3">
+    <label for="tipoDeEvento" class="form-label">Tipo de Evento *</label>
+    <select id="tipoDeEvento" class="form-select" formControlName="tipoDeEvento"
+            [ngClass]="{'is-invalid': eventForm.get('tipoDeEvento')?.invalid && eventForm.get('tipoDeEvento')?.touched}">
+      <option value="" disabled>Selecciona un tipo</option>
+      @for (tipo of tiposDeEventos; track tipo) {
+        <option [value]="tipo.tipoDeEvento">{{ tipo.tipoDeEvento }}</option>
+      }
+    </select>
+    <div class="invalid-feedback">
+      Debes seleccionar un tipo de evento.
+    </div>
+  </div>
+
+  <hr>
+
+  <div formArrayName="funciones">
+    @for (funcion of funciones.controls; track funcion; let i = $index) {
+      <div [formGroupName]="i" class="border p-3 mb-3 rounded">
+
+        <h5>Función {{ i + 1 }}</h5>
+
+        <!-- Fecha y Hora -->
+        <div class="row mb-3">
+          <div class="col">
+            <label class="form-label">Fecha *</label>
+            <input type="date" class="form-control" formControlName="fecha"
+                   [ngClass]="{'is-invalid': funcion.get('fecha')?.invalid && funcion.get('fecha')?.touched}">
+            <div class="invalid-feedback">La fecha es obligatoria. Debe ser una fecha futura</div>
+          </div>
+          <div class="col">
+            <label class="form-label">Hora *</label>
+            <input type="time" class="form-control" formControlName="hora"
+                   [ngClass]="{'is-invalid': funcion.get('hora')?.invalid && funcion.get('hora')?.touched}">
+            <div class="invalid-feedback">La hora es obligatoria.</div>
+          </div>
+        </div>
+
+        <!-- Lugar -->
+        <div formGroupName="lugar" class="mb-3">
+          <label class="form-label">Lugar</label>
+          <div class="row">
+            <div class="col">
+              <input type="text" class="form-control mb-2" placeholder="Dirección" formControlName="direccion"
+                     [ngClass]="{'is-invalid': funcion.get('lugar')!.get('direccion')?.invalid && funcion.get('lugar')!.get('direccion')?.touched}">
+              <div class="invalid-feedback">La dirección es obligatoria</div>
+            </div>
+            <div class="col">
+              <input type="text" class="form-control mb-2" placeholder="Altura" formControlName="altura"
+                     [ngClass]="{'is-invalid': funcion.get('lugar')!.get('altura')?.invalid && funcion.get('lugar')!.get('altura')?.touched}">
+              <div class="invalid-feedback">La altura es obligatoria</div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <input type="text" class="form-control mb-2" placeholder="Localidad" formControlName="localidad"
+                     [ngClass]="{'is-invalid': funcion.get('lugar')!.get('localidad')?.invalid && funcion.get('lugar')!.get('localidad')?.touched}">
+              <div class="invalid-feedback">La localidad es obligatoria</div>
+            </div>
+            <div class="col">
+              <input type="text" class="form-control mb-2" placeholder="Provincia" formControlName="provincia"
+                     [ngClass]="{'is-invalid': funcion.get('lugar')!.get('provincia')?.invalid && funcion.get('lugar')!.get('provincia')?.touched}">
+              <div class="invalid-feedback">La provincia es obligatoria</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Disponibilidades -->
+        <div formArrayName="disponibilidades" class="mb-3">
+          <h6>Disponibilidades</h6>
+          @for (disp of disponibilidades(i).controls; track disp; let j = $index){
+            <div [formGroupName]="j" class="border p-2 mb-2 rounded"
+                 [ngClass]="{'is-invalid': disp.invalid && disp.touched}">
+
+              <div class="row align-items-end">
+                <div class="col-md-4">
+                  <label class="form-label">Tipo de Entrada</label>
+                  <select class="form-select" formControlName="tipoDeEntrada"
+                          [ngClass]="{'is-invalid': disp.get('tipoDeEntrada')?.invalid && disp.get('tipoDeEntrada')?.touched}">
+                    @for (tipo of tiposDeEntradaPorFuncion(i); track tipo) {
+                      <option [value]="tipo">{{ tipo }}</option>
+                    }
+                  </select>
+                  <div class="invalid-feedback">Selecciona un tipo de entrada</div>
+                </div>
+
+                <div class="col-md-4">
+                  <label class="form-label">Precio *</label>
+                  <input type="number" class="form-control" formControlName="precio"
+                         [ngClass]="{'is-invalid': disp.get('precio')?.invalid && disp.get('precio')?.touched}">
+                  <div class="invalid-feedback">Precio obligatorio</div>
+                </div>
+
+                <div class="col-md-3">
+                  <label class="form-label">Cupos Totales *</label>
+                  <input type="number" class="form-control" formControlName="cuposTotales"
+                         [ngClass]="{'is-invalid': disp.get('cuposTotales')?.invalid && disp.get('cuposTotales')?.touched}">
+                  <div class="invalid-feedback">Cupos obligatorios</div>
+                </div>
+
+                <div class="col-md-1">
+                  <button type="button" class="btn btn-danger btn-sm" (click)="removeDisponibilidad(i, j)">X</button>
+                </div>
+              </div>
+
+            </div>
+          }
+          <div class="invalid-feedback">Debe haber al menos una disponibilidad</div>
+          <button type="button" class="btn btn-secondary btn-sm mt-2" (click)="addDisponibilidad(i)">Agregar Disponibilidad</button>
+        </div>
+
+        <button type="button" class="btn btn-danger btn-sm" (click)="removeFuncion(i)">Eliminar Función</button>
+
+      </div>
+    }
+  </div>
+
+  <button type="button" class="btn btn-primary mb-3" (click)="addFuncion()" [disabled]="!eventForm.get('tipoDeEvento')?.value">Agregar Función</button>
+
+  <hr>
+
+  <button type="submit" class="btn btn-success">Crear Evento</button>
+
+</form>

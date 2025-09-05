@@ -39,7 +39,7 @@ public class AuthService {
         if(userService.userExists(req.email()))
             throw new UserAlreadyExistsException("This email is already registered");
 
-        Usuario usuario = userService.crearUsuario(req);
+        Usuario usuario = userService.crearUsuarioCliente(req);
 
         Token token = new Token(jwtService.getAccessToken(usuario));
         tokenService.save(token);

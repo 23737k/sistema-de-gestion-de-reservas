@@ -1,0 +1,38 @@
+<div class="container mt-5" style="max-width: 400px;">
+  <h2 class="mb-4 text-center">Iniciar Sesión</h2>
+
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+
+
+    <div class="mb-3">
+      <label class="form-label">Email</label>
+      <input type="email" class="form-control" formControlName="email" />
+      @if(loginForm.get('email')?.touched && loginForm.get('email')?.invalid){
+        <div class="text-danger">
+        Ingrese un email válido
+      </div>
+      }
+
+    </div>
+
+
+    <div class="mb-3">
+      <label class="form-label">Contraseña</label>
+      <input type="password" class="form-control" formControlName="password" />
+       @if(loginForm.get('password')?.touched && loginForm.get('password')?.invalid){
+        <div class="text-danger">
+        La contraseña debe tener al menos 6 caracteres
+        </div>
+      }
+    </div>
+    @if (badCredentials()) {
+      <div class="text-danger text-center mb-2">Credenciales incorrectas</div>
+    }
+    <button type="submit" class="btn btn-primary w-100">Ingresar</button>
+  </form>
+
+  <div class="text-center mt-3">
+    ¿No tienes cuenta? <a [routerLink]="['/registro']">Registrate</a>
+  </div>
+</div>
+

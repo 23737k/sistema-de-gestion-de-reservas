@@ -17,9 +17,9 @@ public record FuncionReq(
     @NotNull(message = "La fecha no puede estar vacía")
     LocalDate fecha,
 
-    @Schema(description = "Hora de la función en formato HH:mm:ss (24h)", example = "14:30:00")
+    @Schema(description = "Hora de la función en formato HH:mm(24h)", example = "14:30")
     @NotNull(message = "La hora no puede estar vacía")
-    @JsonFormat(pattern = "HH:mm:ss")
+    @JsonFormat(pattern = "HH:mm")
     LocalTime hora,
 
     @Schema(description = "Lugar donde se realiza la función")

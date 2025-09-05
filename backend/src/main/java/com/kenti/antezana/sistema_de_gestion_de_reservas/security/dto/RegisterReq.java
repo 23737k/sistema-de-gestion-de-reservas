@@ -35,9 +35,5 @@ public record RegisterReq (
 
     @NotBlank
     @Schema(example = "P@ssw0rd!")
-    String password,
-
-    @NotNull
-    @Schema(example="CLIENTE")
-    Rol rol
+    String password
 ){}

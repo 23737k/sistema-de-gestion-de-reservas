@@ -1,4 +1,4 @@
-export interface Evento{
+export interface EventoRes {
   id:number;
   nombre:string;
   descripcion:string;

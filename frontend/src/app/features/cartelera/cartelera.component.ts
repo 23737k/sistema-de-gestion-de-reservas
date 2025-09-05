@@ -1,5 +1,5 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { Evento } from '../../services/interfaces/Evento';
+import { EventoRes } from '../../services/interfaces/EventoRes';
 import { EventoComponent } from './components/evento.component';
 import { EventoService } from 'src/app/services/evento.service';
 
@@ -18,7 +18,7 @@ export class CarteleraComponent implements OnInit{
     })
   }
 
-  eventos=signal<Evento[]>([]);
+  eventos=signal<EventoRes[]>([]);
 
 
 

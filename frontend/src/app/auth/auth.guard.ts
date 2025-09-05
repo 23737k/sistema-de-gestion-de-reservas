@@ -1,16 +1,17 @@
 import { inject } from "@angular/core";
 import { CanActivateFn, Router } from "@angular/router";
-import {jwtDecode} from 'jwt-decode';
 import { AuthService } from "../services/auth.service";
+import {JwtPayload} from '../services/interfaces/JwtPayload';
+import {jwtDecode} from 'jwt-decode';
 
 
 export const roleGuard = (rolesPermitidos: string[]): CanActivateFn => {
   return (route, state) => {
     const router = inject(Router);
-    const user = getUserFromToken();
+    const user = getRol();
 
     if (!user || !user.roles.some(r => rolesPermitidos.includes(r))) {
-      router.navigateByUrl('/registro');
+      router.navigateByUrl('/login');
       return false;
     }
     return true;
@@ -19,32 +20,30 @@ export const roleGuard = (rolesPermitidos: string[]): CanActivateFn => {
 
 export const authGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
-  const user = getUserFromToken();
+  const user = sessionStorage.getItem('TOKEN_KEY');
 
   if (!user) {
-    router.navigateByUrl('/registro');
+    router.navigateByUrl('/login');
     return false;
   }
   return true;
 };
 
 
+export const redirectIfLoggedInGuard: CanActivateFn = (route, state) => {
+  const router = inject(Router);
+  const rol = sessionStorage.getItem('ROL');
 
-export interface JwtPayload {
-  sub: string;
-  username: string;
-  roles: string[];
-  exp: number;
-}
-
-export const getUserFromToken = (): JwtPayload | null => {
-  const authService = inject(AuthService);
-  const token = authService.getToken();
-  if (!token) return null;
-  try {
-    console.log(jwtDecode<JwtPayload>(token))
-    return jwtDecode<JwtPayload>(token);
-  } catch (err) {
-    return null;
+  if (rol) {
+    if (rol.includes('CLIENTE')) {
+      router.navigateByUrl('/cartelera');
+    } else if (rol.includes('ADMIN')) {
+      router.navigateByUrl('/eventos/nuevo');
+    } else {
+      router.navigateByUrl('/login');
+    }
+    return false;
   }
+
+  return true;
 };

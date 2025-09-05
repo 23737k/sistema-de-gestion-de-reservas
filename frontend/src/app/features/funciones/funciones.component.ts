@@ -1,7 +1,7 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FuncionesService } from 'src/app/services/funciones.service';
-import { Funcion } from 'src/app/services/interfaces/Funcion';
+import { FuncionRes} from '../../services/interfaces/FuncionRes';
 import { DatePipe, registerLocaleData, TitleCasePipe } from '@angular/common';
 import localeEs from '@angular/common/locales/es';
 
@@ -17,7 +17,7 @@ export class FuncionesComponent implements OnInit{
   private funcionesService = inject(FuncionesService);
   private router = inject(ActivatedRoute);
 
-  funciones = signal<Funcion[]>([]);
+  funciones = signal<FuncionRes[]>([]);
 
   ngOnInit(){
     const eventoId:string= this.router.snapshot.paramMap.get('eventoId')!;
@@ -26,7 +26,7 @@ export class FuncionesComponent implements OnInit{
     })
   }
 
-  cuposDisponibles(funcion:Funcion){
+  cuposDisponibles(funcion:FuncionRes){
     const disponibilidades = funcion.disponibilidades;
     return disponibilidades.reduce((total,disponibilidad) => total + (disponibilidad.cuposTotales - disponibilidad.cuposOcupados),0);
   }

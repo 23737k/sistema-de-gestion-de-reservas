@@ -1,4 +1,4 @@
-<div class="container mt-4">
+<div class="container mt-4 col-lg-6 col-xl-4">
   <h2>Registro</h2>
   <form [formGroup]="registroForm" (ngSubmit)="onSubmit()">
 
@@ -16,7 +16,7 @@
 
     <div class="mb-3">
       <label class="form-label">Apellido</label>
-      <input class="form-control" formControlName="apellido" />
+      <input type="text" class="form-control" formControlName="apellido" />
       @if(registroForm.get('apellido')?.touched && registroForm.get('apellido')?.invalid){
         <div class="text-danger">
         El apellido es obligatorio
@@ -27,10 +27,10 @@
 
     <div class="mb-3">
       <label class="form-label">Documento</label>
-      <input class="form-control" formControlName="documento" />
+      <input type="number" class="form-control" formControlName="documento" />
       @if(registroForm.get('documento')?.touched && registroForm.get('documento')?.invalid){
         <div  class="text-danger">
-        Documento inválido
+        Documento inválido: debe contener 8 dígitos, sin puntos ni espacios
         </div>
       }
     </div>
@@ -52,10 +52,10 @@
 
     <div class="mb-3">
       <label class="form-label">Teléfono</label>
-      <input class="form-control" formControlName="telefono" />
+      <input type="number" class="form-control" formControlName="telefono" />
       @if(registroForm.get('telefono')?.touched && registroForm.get('telefono')?.invalid){
       <div class="text-danger">
-        Teléfono inválido
+        Teléfono inválido: debe contener 10 digitos, sin el 0
       </div>
       }
     </div>
@@ -81,7 +81,6 @@
         </div>
       }
     </div>
-
-    <button type="submit" class="btn btn-primary">Registrarse</button>
+    <button type="submit" class="btn btn-primary w-100">Registrarse</button>
   </form>
 </div>

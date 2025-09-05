@@ -1,5 +1,5 @@
 import { Component, Input, signal } from '@angular/core';
-import { Evento } from '../../../services/interfaces/Evento';
+import { EventoRes } from '../../../services/interfaces/EventoRes';
 import { RouterLink } from '@angular/router'
 
 @Component({
@@ -10,7 +10,7 @@ import { RouterLink } from '@angular/router'
 })
 export class EventoComponent {
   @Input()
-  evento!:Evento;
+  evento!:EventoRes;
 
 
 }
