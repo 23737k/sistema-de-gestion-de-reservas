@@ -1,0 +1,8 @@
+.card-hover {
+  transition: transform 0.2s, filter 0.2s;
+}
+.card-hover:hover {
+  filter: brightness(85%);
+  transform: scale(1.03);
+  cursor: pointer;
+}

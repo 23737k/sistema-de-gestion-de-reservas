@@ -1,0 +1,7 @@
+<div class="row m-3">
+  @for (evento of eventos(); track evento){
+    <div class="col-md-4 mb-4">
+      <app-evento [evento]="evento"></app-evento>
+    </div>
+  }
+</div>

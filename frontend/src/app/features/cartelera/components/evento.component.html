@@ -1,0 +1,12 @@
+<div class="card h-100">
+    <div class="card-body">
+      <h5 class="card-title">{{ evento.nombre }}</h5>
+      <p class="card-text">
+        <strong>Descripcion:</strong> {{ evento.descripcion}}<br>
+        <strong>Tipo de Evento:</strong> {{ evento.tipoDeEvento }}<br>
+      </p>
+      <a  [routerLink]="[evento.id + '/funciones']">
+        <button class="btn btn-primary" >Reservar</button>
+      </a>
+    </div>
+</div>

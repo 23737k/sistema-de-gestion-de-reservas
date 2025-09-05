@@ -1,0 +1,87 @@
+<div class="container mt-4">
+  <h2>Registro</h2>
+  <form [formGroup]="registroForm" (ngSubmit)="onSubmit()">
+
+
+    <div class="mb-3">
+      <label class="form-label">Nombre</label>
+      <input class="form-control" formControlName="nombre" />
+      @if (registroForm.get('nombre')?.touched && registroForm.get('nombre')?.invalid) {
+        <div class="text-danger">
+        El nombre es obligatorio
+        </div>
+      }
+    </div>
+
+
+    <div class="mb-3">
+      <label class="form-label">Apellido</label>
+      <input class="form-control" formControlName="apellido" />
+      @if(registroForm.get('apellido')?.touched && registroForm.get('apellido')?.invalid){
+        <div class="text-danger">
+        El apellido es obligatorio
+        </div>
+      }
+    </div>
+
+
+    <div class="mb-3">
+      <label class="form-label">Documento</label>
+      <input class="form-control" formControlName="documento" />
+      @if(registroForm.get('documento')?.touched && registroForm.get('documento')?.invalid){
+        <div  class="text-danger">
+        Documento inválido
+        </div>
+      }
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Tipo de Documento</label>
+      <select class="form-select" formControlName="tipo_de_documento">
+        <option value="">Seleccione...</option>
+        @for (tipo of tiposDocumento; track tipo) {
+          <option [value]="tipo">{{ tipo }}</option>
+        }
+      </select>
+      @if(registroForm.get('tipo_de_documento')?.touched && registroForm.get('tipo_de_documento')?.invalid){
+        <div class="text-danger">
+          Seleccione un tipo de documento
+        </div>
+      }
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Teléfono</label>
+      <input class="form-control" formControlName="telefono" />
+      @if(registroForm.get('telefono')?.touched && registroForm.get('telefono')?.invalid){
+      <div class="text-danger">
+        Teléfono inválido
+      </div>
+      }
+    </div>
+
+
+    <div class="mb-3">
+      <label class="form-label">Email</label>
+      <input type="email" class="form-control" formControlName="email" />
+      @if(registroForm.get('email')?.touched && registroForm.get('email')?.invalid){
+      <div  class="text-danger">
+        Email inválido
+      </div>
+      }
+    </div>
+
+
+    <div class="mb-3">
+      <label class="form-label">Contraseña</label>
+      <input type="password" class="form-control" formControlName="password" />
+      @if(registroForm.get('password')?.touched && registroForm.get('password')?.invalid){
+        <div class="text-danger">
+          Mínimo 6 caracteres
+        </div>
+      }
+    </div>
+
+    <button type="submit" class="btn btn-primary">Registrarse</button>
+  </form>
+</div>

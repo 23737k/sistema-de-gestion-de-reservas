@@ -1,0 +1,24 @@
+<div class="container-fluid">
+  <div class="row g-3 mt-3 row-cols-1 row-cols-md-2 row-cols-xl-4">
+    @for (funcion of funciones(); track funcion) {
+      <div class="col">
+        <div class="card shadow-sm card-hover h-100">
+          <div class="card-body">
+            <h5 class="card-title">{{funcion.fecha | date:'EEEE':'':'es' | titlecase }}</h5>
+            <p class="card-text">{{funcion.fecha | date:'mediumDate':'':'es'}} {{funcion.hora}} hs</p>
+            <div class="row">
+              <div class="col-6">
+                <strong class="card-text">{{funcion.lugar.direccion}}</strong>
+                <p class="card-text">{{funcion.lugar.localidad}}</p>
+              </div>
+              <div class="col-6 text-end">
+                <p class="mb-0">Cupos Disponibles</p>
+                <p>{{cuposDisponibles(funcion)}}</p>
+              </div>
+            </div>
+        </div>
+      </div>
+      </div>
+    }
+  </div>
+</div>
